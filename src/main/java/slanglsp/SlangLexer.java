@@ -70,16 +70,21 @@ public class SlangLexer extends LexerBase {
             while (position < endOffset && Character.isWhitespace(buffer.charAt(position))) position++;
             tokenType = TEXT;
         } else if (c == '/' && position + 1 < endOffset && buffer.charAt(position + 1) == '/') {
-            while (position < endOffset && buffer.charAt(position) != '\n') position++;
+            while (position < endOffset && buffer.charAt(position) != '\n' && buffer.charAt(position) != '\r') position++;
             tokenType = COMMENT;
         } else if (c == '"' || c == '\'') {
             char quote = c;
             position++;
-            while (position < endOffset && buffer.charAt(position) != quote) {
-                if (buffer.charAt(position) == '\\' && position + 1 < endOffset) position++;
+            while (position < endOffset) {
+                char ch = buffer.charAt(position);
+                if (ch == '\\' && position + 1 < endOffset) {
+                    position += 2;
+                    continue;
+                }
+                if (ch == quote || ch == '\n' || ch == '\r') break;
                 position++;
             }
-            if (position < endOffset) position++;
+            if (position < endOffset && buffer.charAt(position) == quote) position++;
             tokenType = STRING;
         } else if (Character.isDigit(c)) {
             while (position < endOffset && (Character.isDigit(buffer.charAt(position)) || buffer.charAt(position) == '.')) position++;
@@ -103,6 +108,24 @@ public class SlangLexer extends LexerBase {
                     tokenType = VARIABLE;
                 }
             }
+        } else if (c == '{') {
+            position++;
+            tokenType = SlangTokenTypes.L_CURLY;
+        } else if (c == '}') {
+            position++;
+            tokenType = SlangTokenTypes.R_CURLY;
+        } else if (c == '(') {
+            position++;
+            tokenType = SlangTokenTypes.L_PARENTHESIS;
+        } else if (c == ')') {
+            position++;
+            tokenType = SlangTokenTypes.R_PARENTHESIS;
+        } else if (c == '[') {
+            position++;
+            tokenType = SlangTokenTypes.L_BRACKET;
+        } else if (c == ']') {
+            position++;
+            tokenType = SlangTokenTypes.R_BRACKET;
         } else {
             position++;
             tokenType = TEXT;

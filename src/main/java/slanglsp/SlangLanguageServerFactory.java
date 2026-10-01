@@ -12,8 +12,6 @@ import com.redhat.devtools.lsp4ij.client.LanguageClientImpl;
 import com.redhat.devtools.lsp4ij.server.ProcessStreamConnectionProvider;
 import com.redhat.devtools.lsp4ij.server.StreamConnectionProvider;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.plugins.textmate.configuration.TextMateUserBundlesSettings;
-import org.jetbrains.plugins.textmate.TextMateService;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -62,7 +60,7 @@ class SlangLanguageServer extends ProcessStreamConnectionProvider
                 "`slangd`/`slangd.exe` was not found in the `PATH` environment variable. It is preferable to add (once the latest vulkan SDK is installed) `$VK_SDK_PATH/bin` to your `PATH` environment variable (on linux the paths *may* differ slightly) to use `slangd` bundled with the Vulkan SDK. After these steps, restart this IDE.",
                 NotificationType.ERROR
             ).notify(project);
-            LanguageServerManager.getInstance(project).stop("slangLanguageServer");
+            LanguageServerManager.getInstance(project).stop("slanglsp.SlangLanguageServer");
         }
     }
 
