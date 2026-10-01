@@ -9,6 +9,7 @@ import com.redhat.devtools.lsp4ij.LanguageServerFactory;
 import com.redhat.devtools.lsp4ij.LanguageServerManager;
 import com.redhat.devtools.lsp4ij.ServerStatus;
 import com.redhat.devtools.lsp4ij.client.LanguageClientImpl;
+import com.redhat.devtools.lsp4ij.client.features.LSPClientFeatures;
 import com.redhat.devtools.lsp4ij.server.ProcessStreamConnectionProvider;
 import com.redhat.devtools.lsp4ij.server.StreamConnectionProvider;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,13 @@ public class SlangLanguageServerFactory implements LanguageServerFactory
     public LanguageClientImpl createLanguageClient(Project project)
     {
         return new SlangLanguageClient(project);
+    }
+
+    @NotNull
+    @Override
+    public LSPClientFeatures createClientFeatures()
+    {
+        return new SlangLSPClientFeatures();
     }
 };
 
