@@ -98,7 +98,7 @@ public class SlangRenameHandler implements RenameHandler {
             byFile.computeIfAbsent(occurrence.file(), file -> new ArrayList<>()).add(occurrence);
         }
 
-        WriteCommandAction.runWriteCommandAction(project, "Rename '" + target.name() + "'", null, () -> {
+        WriteCommandAction.runWriteCommandAction(project, () -> {
             FileDocumentManager documentManager = FileDocumentManager.getInstance();
             PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(project);
             for (Map.Entry<VirtualFile, List<SlangOccurrences.Occurrence>> entry : byFile.entrySet()) {
