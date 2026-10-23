@@ -1,6 +1,7 @@
 package slanglsp;
 
 import com.intellij.codeInsight.CodeInsightSettings;
+import com.intellij.codeInsight.AutoPopupController;
 import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -55,6 +56,11 @@ public class SlangTypedHandler extends TypedHandlerDelegate {
             }
             document.insertString(offset, String.valueOf(charTyped) + closer);
             editor.getCaretModel().moveToOffset(offset + 1);
+            if (charTyped == '(' || charTyped == '[') {
+                // Our STOP prevents LSP4IJ's completion-trigger typed handler from running, so
+                // schedule the auto popup ourselves (member/argument completion after ( or [).
+                AutoPopupController.getInstance(project).scheduleAutoPopup(editor);
+            }
             return Result.STOP;
         }
 

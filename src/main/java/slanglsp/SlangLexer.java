@@ -38,6 +38,10 @@ public class SlangLexer extends LexerBase {
         return KEYWORDS.contains(word);
     }
 
+    public static @NotNull Set<String> keywords() {
+        return KEYWORDS;
+    }
+
     @Override
     public void start(@NotNull CharSequence buffer, int startOffset, int endOffset, int initialState) {
         this.buffer = buffer;

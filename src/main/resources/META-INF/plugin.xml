@@ -14,6 +14,12 @@
     </description>
 
     <change-notes><![CDATA[
+        <h2>0.0.15</h2>
+        <ul>
+            <li>Ctrl+Space completion now includes Slang keywords, builtin types/functions and symbols from the current file, alongside slangd's server suggestions.</li>
+            <li>Completion auto-pops after '(' and '[' even with C#-style bracket insertion enabled.</li>
+            <li>Member completion after '.' is left to the language server.</li>
+        </ul>
         <h2>0.0.14</h2>
         <ul>
             <li>Go to declaration no longer offers identifiers from import/module declarations.</li>
@@ -69,6 +75,11 @@
 
         <findUsagesHandlerFactory implementation="slanglsp.SlangFindUsagesHandlerFactory"
                                   order="first"/>
+
+        <completion.contributor id="SlangCompletionContributor"
+                                language="Slang"
+                                implementationClass="slanglsp.SlangCompletionContributor"
+                                order="first, before LSPCompletionContributor"/>
 
         <codeInsight.parameterInfo
                 language="Slang"
