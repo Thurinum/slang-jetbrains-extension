@@ -136,6 +136,13 @@ class SlangLanguageClient extends LanguageClientImpl
     {
         if (serverStatus == com.redhat.devtools.lsp4ij.ServerStatus.started)
         {
+            // slangd answers list-typed requests (definition, ...) with {} when there is no
+            // result; without this the malformed response kills the message loop and LSP4IJ
+            // reports "Cannot start server".
+            if (getClientFeatures() instanceof SlangLSPClientFeatures) {
+                ((SlangLSPClientFeatures) getClientFeatures()).installResponseCompatibility();
+            }
+
             // Re-enable Semantic Tokens and deeply map them to JetBrains IDE colors
             getClientFeatures().setSemanticTokensFeature(new com.redhat.devtools.lsp4ij.client.features.LSPSemanticTokensFeature() {
                 @Override

@@ -4,9 +4,9 @@ import java.nio.file.Paths
 import java.util.zip.*
 import kotlin.io.path.absolute
 
-fun getProjectVersion():String = "0.0.10"
+fun getProjectVersion():String = "0.0.12"
 project.version = getProjectVersion()
-group = "slang"
+group = "io.github.thurinum"
 
 plugins {
     id("java")
@@ -34,7 +34,6 @@ dependencies {
         jetbrainsRuntime()
         plugin("com.redhat.devtools.lsp4ij:0.13.0")
     }
-    implementation("com.google.code.gson:gson:2.11.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
 }
 

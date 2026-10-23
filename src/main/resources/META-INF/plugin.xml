@@ -1,18 +1,26 @@
 <idea-plugin>
-    <id>slanglsp</id>
+    <id>io.github.thurinum.slang</id>
 
-    <name>Slang [Unofficial]</name>
+    <name>Slang [Unofficial] (Thurinum)</name>
 
-    <vendor email="aglasroth@gmail.com">16-Bit-Dog</vendor>
+    <vendor url="https://github.com/Thurinum">Thurinum</vendor>
 
     <description>
         <![CDATA[
         <p>Slang [Unofficial] is a plugin that provides Slang language support for Jetbrain's platforms. This plugin is not an official Slang plugin.</p>
+        <p>This is the Thurinum fork of <a href="https://github.com/16-Bit-Dog/slang-jetbrains-extension">16-Bit-Dog's Slang [Unofficial]</a>, released under the Apache License 2.0. It fixes crashes caused by slangd returning empty objects for list-typed results.</p>
         <p>To use this plugin, please add `slangd` to the PATH. This can be done through adding `$VK_SDK_PATH/bin` to your `PATH` environment variable </p>
         ]]>
     </description>
 
     <change-notes><![CDATA[
+        <h2>0.0.12</h2>
+        <ul>
+            <li>Fixed "Cannot start Slang language server" crashes caused by the plugin bundling its own copy of Gson.</li>
+            <li>Fixed "Cannot start Slang language server" when slangd returns an empty JSON object for definition/document symbol requests.</li>
+            <li>Go to definition and the rest of IntelliSense no longer stop working after such a request.</li>
+            <li>Fixed crashes caused by ambiguous LSP4J Either responses (0.0.10).</li>
+        </ul>
     ]]>
     </change-notes>
     <!-- Product and plugin compatibility requirements. -->

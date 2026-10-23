@@ -1,6 +1,10 @@
 package slanglsp;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
 import com.redhat.devtools.lsp4ij.client.features.LSPClientFeatures;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.services.LanguageServer;
@@ -13,9 +17,10 @@ import java.lang.reflect.Field;
 import java.util.function.Consumer;
 
 /**
- * {@link LSPClientFeatures} that installs {@link SlangEitherTypeAdapterFactory} on the JSON
- * launcher used to talk to {@code slangd}, so that ambiguous {@code Either} responses can no
- * longer abort an LSP request (or the whole server startup).
+ * {@link LSPClientFeatures} that makes the JSON launcher used to talk to {@code slangd} tolerate
+ * two server quirks that would otherwise abort an LSP request (or the whole server):
+ * ambiguous {@code Either} responses ({@link SlangEitherTypeAdapterFactory}) and empty JSON objects
+ * sent for list-typed results ({@link SlangJsonRpcCompatibility}).
  * <p>
  * The method {@link #createLauncherBuilder()} is intentionally not annotated with
  * {@code @Override}: the LSP4IJ version this plugin is compiled against (0.13.0) predates that
@@ -25,18 +30,28 @@ import java.util.function.Consumer;
  */
 public class SlangLSPClientFeatures extends LSPClientFeatures {
 
+    private volatile Gson launcherGson;
+
+    /**
+     * Installs the empty-result compatibility layer on the launcher that is currently running.
+     */
+    void installResponseCompatibility() {
+        Gson gson = launcherGson;
+        if (gson != null) {
+            SlangJsonRpcCompatibility.install(gson);
+        }
+    }
+
     public <S extends LanguageServer> Launcher.Builder<S> createLauncherBuilder() {
         Launcher.Builder<S> builder = createLSP4IJLauncherBuilder();
-        if (builder != null) {
-            installEitherSupport(builder);
-            return builder;
+        if (builder == null) {
+            builder = createDefaultLauncherBuilder();
         }
-
-        Launcher.Builder<S> fallback = createDefaultLauncherBuilder();
-        if (fallback != null) {
-            return fallback;
+        if (builder == null) {
+            throw new IllegalStateException("Unable to create an LSP launcher builder");
         }
-        throw new IllegalStateException("Unable to create an LSP launcher builder");
+        installEitherSupport(builder);
+        return builder;
     }
 
     /**
@@ -72,13 +87,20 @@ public class SlangLSPClientFeatures extends LSPClientFeatures {
         }
     }
 
-    private static void installEitherSupport(Launcher.Builder<?> builder) {
+    private void installEitherSupport(Launcher.Builder<?> builder) {
         try {
             Consumer<GsonBuilder> existing = readGsonConfigurer(builder);
             Consumer<GsonBuilder> combined = gsonBuilder -> {
                 if (existing != null) {
                     existing.accept(gsonBuilder);
                 }
+                gsonBuilder.registerTypeAdapterFactory(new TypeAdapterFactory() {
+                    @Override
+                    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+                        launcherGson = gson;
+                        return null;
+                    }
+                });
                 gsonBuilder.registerTypeAdapterFactory(new SlangEitherTypeAdapterFactory());
             };
             builder.configureGson(combined);

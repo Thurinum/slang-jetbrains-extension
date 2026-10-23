@@ -45,9 +45,6 @@ bin/
 .run
 
 .gradle
-gradle
-gradlew
-gradlew.bat
 
 src/main/resources/version.txt
 
