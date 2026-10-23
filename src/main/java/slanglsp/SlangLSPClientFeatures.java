@@ -5,9 +5,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.intellij.psi.PsiFile;
+import com.redhat.devtools.lsp4ij.client.features.EditorBehaviorFeature;
 import com.redhat.devtools.lsp4ij.client.features.LSPClientFeatures;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.services.LanguageServer;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -29,6 +32,26 @@ import java.util.function.Consumer;
  * shipped with current IDEs), and is simply never called on older ones.
  */
 public class SlangLSPClientFeatures extends LSPClientFeatures {
+
+    public SlangLSPClientFeatures() {
+        // LSP4IJ's editor improvements are opt-in; enable the ones that make Slang feel like C#.
+        setEditorBehaviorFeature(new EditorBehaviorFeature(this) {
+            @Override
+            public boolean isEnableStringLiteralImprovements(@NotNull PsiFile file) {
+                return true;
+            }
+
+            @Override
+            public boolean isEnableStatementTerminatorImprovements(@NotNull PsiFile file) {
+                return true;
+            }
+
+            @Override
+            public boolean isEnableEnterBetweenBracesFix(@NotNull PsiFile file) {
+                return true;
+            }
+        });
+    }
 
     private volatile Gson launcherGson;
 

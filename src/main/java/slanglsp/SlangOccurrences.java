@@ -40,6 +40,21 @@ final class SlangOccurrences {
         return type == SlangLexer.TYPE || type == SlangLexer.FUNCTION || type == SlangLexer.VARIABLE;
     }
 
+    static @Nullable IElementType tokenTypeAt(@NotNull CharSequence text, int offset) {
+        SlangLexer lexer = new SlangLexer();
+        lexer.start(text);
+        while (lexer.getTokenType() != null) {
+            if (lexer.getTokenStart() <= offset && offset < lexer.getTokenEnd()) {
+                return lexer.getTokenType();
+            }
+            if (lexer.getTokenStart() > offset) {
+                return null;
+            }
+            lexer.advance();
+        }
+        return null;
+    }
+
     static boolean isValidIdentifier(@NotNull String value) {
         if (value.isEmpty()) {
             return false;

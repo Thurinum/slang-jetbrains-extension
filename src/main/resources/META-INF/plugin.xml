@@ -49,6 +49,12 @@
                        implementation="slanglsp.SlangRenameHandler"
                        order="first, before LSPRenameHandler"/>
 
+        <typedHandler implementation="slanglsp.SlangTypedHandler"
+                      order="first, before LSPEditorImprovementsTypedHandler"/>
+        <backspaceHandlerDelegate id="SlangSmartBackspaceHandler"
+                                  implementation="slanglsp.SlangSmartBackspaceHandler"
+                                  order="before LSPEditorImprovementsBackspaceHandler"/>
+
         <codeInsight.parameterInfo
                 language="Slang"
                 implementationClass="com.redhat.devtools.lsp4ij.features.signatureHelp.LSPParameterInfoHandler"/>
