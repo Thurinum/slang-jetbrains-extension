@@ -44,6 +44,29 @@ public class SlangSyntaxHighlighterColors {
             new TextAttributes(new JBColor(new Color(0xaf00db), new Color(0xc586c0)), null, null, null, Font.PLAIN)
     );
 
+    // VS Code Purple for control-flow keywords (if/for/return/...)
+    public static final TextAttributesKey CONTROL_FLOW = TextAttributesKey.createTextAttributesKey(
+            "SLANG_CONTROL_FLOW",
+            new TextAttributes(new JBColor(new Color(0xaf00db), new Color(0xc586c0)), null, null, null, Font.PLAIN)
+    );
+
+    // VS Code Purple for preprocessor directives (#include, #define, ...)
+    public static final TextAttributesKey PREPROCESSOR = TextAttributesKey.createTextAttributesKey(
+            "SLANG_PREPROCESSOR",
+            new TextAttributes(new JBColor(new Color(0xaf00db), new Color(0xc586c0)), null, null, null, Font.PLAIN)
+    );
+
+    // VS Code Green for Block / Doc Comments
+    public static final TextAttributesKey BLOCK_COMMENT = TextAttributesKey.createTextAttributesKey(
+            "SLANG_BLOCK_COMMENT",
+            new TextAttributes(new JBColor(new Color(0x008000), new Color(0x6a9955)), null, null, null, Font.PLAIN)
+    );
+
+    public static final TextAttributesKey DOC_COMMENT = TextAttributesKey.createTextAttributesKey(
+            "SLANG_DOC_COMMENT",
+            new TextAttributes(new JBColor(new Color(0x008000), new Color(0x6a9955)), null, null, null, Font.PLAIN)
+    );
+
     // VS Code Orange/Red for Strings
     public static final TextAttributesKey STRING = TextAttributesKey.createTextAttributesKey(
             "SLANG_STRING",

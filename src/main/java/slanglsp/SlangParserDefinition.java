@@ -42,7 +42,7 @@ public class SlangParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public TokenSet getCommentTokens() {
-        return TokenSet.create(SlangLexer.COMMENT);
+        return TokenSet.create(SlangLexer.COMMENT, SlangLexer.BLOCK_COMMENT, SlangLexer.DOC_COMMENT);
     }
 
     @NotNull

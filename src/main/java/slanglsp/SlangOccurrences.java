@@ -37,7 +37,8 @@ final class SlangOccurrences {
     }
 
     static boolean isIdentifierToken(@Nullable IElementType type) {
-        return type == SlangLexer.TYPE || type == SlangLexer.FUNCTION || type == SlangLexer.VARIABLE;
+        return type == SlangLexer.TYPE || type == SlangLexer.FUNCTION
+                || type == SlangLexer.VARIABLE || type == SlangLexer.MACRO;
     }
 
     static @Nullable IElementType tokenTypeAt(@NotNull CharSequence text, int offset) {
