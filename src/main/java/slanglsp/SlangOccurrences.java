@@ -55,6 +55,50 @@ final class SlangOccurrences {
         return null;
     }
 
+    /**
+     * Returns {@code true} when the offset belongs to an {@code import}, {@code module} or
+     * {@code using} declaration. Those identifiers name modules/aliases, not the symbol that
+     * happens to share their name.
+     */
+    static boolean isInImportOrModuleDeclaration(@NotNull VirtualFile file, int offset) {
+        Document document = FileDocumentManager.getInstance().getDocument(file);
+        if (document == null) {
+            return false;
+        }
+        CharSequence text = document.getImmutableCharSequence();
+        SlangLexer lexer = new SlangLexer();
+        lexer.start(text);
+        boolean inDeclaration = false;
+        while (lexer.getTokenType() != null) {
+            int start = lexer.getTokenStart();
+            int end = lexer.getTokenEnd();
+            IElementType type = lexer.getTokenType();
+
+            if (type == SlangLexer.KEYWORD) {
+                String word = text.subSequence(start, end).toString();
+                if (word.equals("import") || word.equals("module") || word.equals("using")) {
+                    inDeclaration = true;
+                }
+            }
+            if (inDeclaration) {
+                if (start <= offset && offset < end) {
+                    return true;
+                }
+                if (type == SlangLexer.TEXT) {
+                    for (int i = start; i < end; i++) {
+                        char c = text.charAt(i);
+                        if (c == ';' || c == '\n' || c == '\r') {
+                            inDeclaration = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            lexer.advance();
+        }
+        return false;
+    }
+
     static boolean isValidIdentifier(@NotNull String value) {
         if (value.isEmpty()) {
             return false;

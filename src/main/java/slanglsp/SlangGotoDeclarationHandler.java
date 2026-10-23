@@ -47,17 +47,21 @@ public class SlangGotoDeclarationHandler implements GotoDeclarationHandler {
             return definitions;
         }
         Project project = file.getProject();
-        List<SlangOccurrences.Occurrence> all = ReadAction.compute(
-                () -> SlangOccurrences.find(project, self.name(), null));
-        List<SlangOccurrences.Occurrence> others = new ArrayList<>(all.size());
-        for (SlangOccurrences.Occurrence occurrence : all) {
-            boolean isSelf = occurrence.file().equals(self.file())
-                    && occurrence.startOffset() == self.startOffset();
-            if (!isSelf) {
-                others.add(occurrence);
+        List<PsiElement> targets = ReadAction.compute(() -> {
+            List<SlangOccurrences.Occurrence> all = SlangOccurrences.find(project, self.name(), null);
+            List<SlangOccurrences.Occurrence> others = new ArrayList<>(all.size());
+            for (SlangOccurrences.Occurrence occurrence : all) {
+                boolean isSelf = occurrence.file().equals(self.file())
+                        && occurrence.startOffset() == self.startOffset();
+                // Module/import names are not usages of the symbol, even if the names match.
+                if (!isSelf && !SlangOccurrences.isInImportOrModuleDeclaration(
+                        occurrence.file(), occurrence.startOffset())) {
+                    others.add(occurrence);
+                }
             }
-        }
-        return SlangOccurrences.toPsiElements(project, others).toArray(PsiElement.EMPTY_ARRAY);
+            return SlangOccurrences.toPsiElements(project, others);
+        });
+        return targets.toArray(PsiElement.EMPTY_ARRAY);
     }
 
     private static boolean containsDeclarationAt(PsiElement[] definitions, VirtualFile file, int offset) {
