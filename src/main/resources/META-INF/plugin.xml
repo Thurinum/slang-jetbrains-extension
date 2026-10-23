@@ -14,12 +14,20 @@
     </description>
 
     <change-notes><![CDATA[
+        <h2>0.0.13</h2>
+        <ul>
+            <li>Ctrl+Click / Go to Declaration now navigates Slang references (textDocument/definition).</li>
+            <li>Clicking a declaration offers its other occurrences, like C# go-to-usages.</li>
+            <li>Rename (Shift+F6) for structs, variables and other identifiers, in the current file or the whole project.</li>
+            <li>Find Usages (Alt+F7) for Slang identifiers.</li>
+            <li>C#-style automatic brace insertion and indentation on Enter.</li>
+            <li>Smart backspace removes a whole indentation level in leading whitespace.</li>
+        </ul>
         <h2>0.0.12</h2>
         <ul>
             <li>Fixed "Cannot start Slang language server" crashes caused by the plugin bundling its own copy of Gson.</li>
             <li>Fixed "Cannot start Slang language server" when slangd returns an empty JSON object for definition/document symbol requests.</li>
             <li>Go to definition and the rest of IntelliSense no longer stop working after such a request.</li>
-            <li>Fixed crashes caused by ambiguous LSP4J Either responses (0.0.10).</li>
         </ul>
     ]]>
     </change-notes>
