@@ -14,6 +14,10 @@
     </description>
 
     <change-notes><![CDATA[
+        <h2>0.0.14</h2>
+        <ul>
+            <li>Go to declaration no longer offers identifiers from import/module declarations.</li>
+        </ul>
         <h2>0.0.13</h2>
         <ul>
             <li>Ctrl+Click / Go to Declaration now navigates Slang references (textDocument/definition).</li>
