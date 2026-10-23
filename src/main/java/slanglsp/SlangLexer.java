@@ -34,6 +34,10 @@ public class SlangLexer extends LexerBase {
             "namespace", "using", "typedef", "this", "discard", "null", "nullptr", "mutating", "nonmutating"
     );
 
+    public static boolean isKeyword(@NotNull String word) {
+        return KEYWORDS.contains(word);
+    }
+
     @Override
     public void start(@NotNull CharSequence buffer, int startOffset, int endOffset, int initialState) {
         this.buffer = buffer;

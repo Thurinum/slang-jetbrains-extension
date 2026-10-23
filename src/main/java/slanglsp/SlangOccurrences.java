@@ -40,6 +40,23 @@ final class SlangOccurrences {
         return type == SlangLexer.TYPE || type == SlangLexer.FUNCTION || type == SlangLexer.VARIABLE;
     }
 
+    static boolean isValidIdentifier(@NotNull String value) {
+        if (value.isEmpty()) {
+            return false;
+        }
+        char first = value.charAt(0);
+        if (!(Character.isLetter(first) || first == '_')) {
+            return false;
+        }
+        for (int i = 1; i < value.length(); i++) {
+            char c = value.charAt(i);
+            if (!(Character.isLetterOrDigit(c) || c == '_')) {
+                return false;
+            }
+        }
+        return !SlangLexer.isKeyword(value);
+    }
+
     /**
      * Returns the identifier under the given offset, or {@code null} if the offset is not on an
      * identifier (keyword, literal, comment, whitespace, ...).

@@ -45,6 +45,10 @@
         <gotoDeclarationHandler implementation="slanglsp.SlangGotoDeclarationHandler"
                                 order="first, before LSPGotoDeclarationHandler"/>
 
+        <renameHandler id="SlangRenameHandler"
+                       implementation="slanglsp.SlangRenameHandler"
+                       order="first, before LSPRenameHandler"/>
+
         <codeInsight.parameterInfo
                 language="Slang"
                 implementationClass="com.redhat.devtools.lsp4ij.features.signatureHelp.LSPParameterInfoHandler"/>
