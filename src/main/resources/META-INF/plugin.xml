@@ -14,6 +14,11 @@
     </description>
 
     <change-notes><![CDATA[
+        <h2>0.0.16</h2>
+        <ul>
+            <li>Removed the automatic bracket insertion / smart backspace feature: its backspace delegate broke the Backspace action (extension ordering exception). Default editor behavior is restored.</li>
+            <li>Completion (Ctrl+Space) is unchanged.</li>
+        </ul>
         <h2>0.0.15</h2>
         <ul>
             <li>Ctrl+Space completion now includes Slang keywords, builtin types/functions and symbols from the current file, alongside slangd's server suggestions.</li>
@@ -66,12 +71,6 @@
         <renameHandler id="SlangRenameHandler"
                        implementation="slanglsp.SlangRenameHandler"
                        order="first, before LSPRenameHandler"/>
-
-        <typedHandler implementation="slanglsp.SlangTypedHandler"
-                      order="first, before LSPEditorImprovementsTypedHandler"/>
-        <backspaceHandlerDelegate id="SlangSmartBackspaceHandler"
-                                  implementation="slanglsp.SlangSmartBackspaceHandler"
-                                  order="before LSPEditorImprovementsBackspaceHandler"/>
 
         <findUsagesHandlerFactory implementation="slanglsp.SlangFindUsagesHandlerFactory"
                                   order="first"/>
