@@ -55,6 +55,9 @@
                                   implementation="slanglsp.SlangSmartBackspaceHandler"
                                   order="before LSPEditorImprovementsBackspaceHandler"/>
 
+        <findUsagesHandlerFactory implementation="slanglsp.SlangFindUsagesHandlerFactory"
+                                  order="first"/>
+
         <codeInsight.parameterInfo
                 language="Slang"
                 implementationClass="com.redhat.devtools.lsp4ij.features.signatureHelp.LSPParameterInfoHandler"/>

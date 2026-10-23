@@ -110,10 +110,20 @@ final class SlangOccurrences {
     static @NotNull List<Occurrence> find(@NotNull Project project,
                                           @NotNull String name,
                                           @Nullable VirtualFile restrictTo) {
-        Collection<VirtualFile> files = restrictTo != null
-                ? List.of(restrictTo)
-                : FileTypeIndex.getFiles(SlangFileType.INSTANCE, GlobalSearchScope.projectScope(project));
+        if (restrictTo != null) {
+            return findInFiles(List.of(restrictTo), name);
+        }
+        return findInScope(project, name, GlobalSearchScope.projectScope(project));
+    }
 
+    static @NotNull List<Occurrence> findInScope(@NotNull Project project,
+                                                 @NotNull String name,
+                                                 @NotNull GlobalSearchScope scope) {
+        return findInFiles(FileTypeIndex.getFiles(SlangFileType.INSTANCE, scope), name);
+    }
+
+    private static @NotNull List<Occurrence> findInFiles(@NotNull Collection<VirtualFile> files,
+                                                         @NotNull String name) {
         List<Occurrence> occurrences = new ArrayList<>();
         FileDocumentManager documentManager = FileDocumentManager.getInstance();
         for (VirtualFile file : files) {
