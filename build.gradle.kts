@@ -4,7 +4,7 @@ import java.nio.file.Paths
 import java.util.zip.*
 import kotlin.io.path.absolute
 
-fun getProjectVersion():String = "0.0.14"
+fun getProjectVersion():String = "0.0.15"
 project.version = getProjectVersion()
 group = "io.github.thurinum"
 
