@@ -42,6 +42,9 @@
                            implementationClass="com.redhat.devtools.lsp4ij.features.codeBlockProvider.LSPCodeBlockProvider"
                            order="first"/>
 
+        <gotoDeclarationHandler implementation="slanglsp.SlangGotoDeclarationHandler"
+                                order="first, before LSPGotoDeclarationHandler"/>
+
         <codeInsight.parameterInfo
                 language="Slang"
                 implementationClass="com.redhat.devtools.lsp4ij.features.signatureHelp.LSPParameterInfoHandler"/>
